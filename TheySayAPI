@@ -1,125 +1,17 @@
-
-var http = require('http'),
-  async = require('async'),
-  affectr = require('./affectr.js'),
-  texts = require('./texts.js'),
-  _ = require("underscore");
-
-var usr = '';
-var pwd = '';
-var baseURL = '/v1';
+from urllib2 import Request, urlopen
 
 
-var endPointRisk = baseURL + '/risk';
-var endPointSpeculation = baseURL + '/speculation';
+def analyse_sent(tip_text):
+values = """
+  {
+    text = + tip_text
+  }
+"""
 
-var reqOpts = {
-  headers: { 
-    'Accept': 'application/json', 
-    'Authorization': 'Basic ' + new Buffer(usr + ':' + pwd).toString('base64'), 
-    'Content-Type': 'application/json' 
-  },  
-  hostname: 'api.theysay.io',
-  method: 'POST',
-  port: 80
-};
-
-function callAdvertisement(text) {
-  reqOpts.path = endPointAdvertisement;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputAdvertisement(analysis, text); });
+headers = {
+  'Content-Type': 'application/json; charset=UTF-8'
 }
+request = Request('https://api.theysay.io/v1/emotion', data=values, headers=headers)
 
-function callChunkParse(text) {
-  reqOpts.path = endPointChunkParse;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputChunkParse(analysis, text); });
-}
-
-function callDepParse(text) {
-  reqOpts.path = endPointDepParse;
-
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputDepParse(analysis, text); });
-}
-
-function callEmotionDocument(text) {
-  reqOpts.path = endPointEmotion;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputEmotionDocument(analysis, text); });
-}
-
-function callEmotionSentence(text) {
-  reqOpts.path = endPointEmotion;
-  var reqBody = JSON.stringify({ text: text, level: "sentence" });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputEmotionSentence(analysis, text); });
-
-function callIntent(text) {
-  reqOpts.path = endPointIntent;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputIntent(analysis, text); });
-}
-
-function callRisk(text) {
-  reqOpts.path = endPointRisk;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputRisk(analysis, text); });
-}
-
-
-function callSpeculation(text) {
-  reqOpts.path = endPointSpeculation;
-  var reqBody = JSON.stringify({ text: text });
-
-  analyse(reqOpts, reqBody, function(analysis) { affectr.outputSpeculation(analysis, text); });
-}
-
-function analyse(reqOpts, reqBody, callback) {
-  var buffer = '';
-
-  var req = http.request(reqOpts, function(res) {
-    res.setEncoding('utf8');
-
-    res.on('data', function (d) { buffer += d; });
-
-    res.on('end', function() { 
-      var analysis = JSON.parse(buffer);
-
-      if (_.isUndefined(analysis.errors)) callback(analysis); 
-      else console.log(analysis.errors);
-    });
-  });
-
-  req.on('error', function(e) { console.log('Dodgy request: ' + e.message); });
-
-  req.write(reqBody);
-
-  req.end();
-}
-
-async.parallel([
-  callAdvertisement(texts.text13),
-  callChunkParse(texts.text1),
-  callDepParse(texts.text1),
-  callEmotionDocument(texts.text10),
-  callEmotionSentence(texts.text10),
-  callGender(texts.text12),
-  callHumourDocument(texts.text11),
-  callHumourSentence(texts.text11),
-  callIntent(texts.text3),
-  callNamedEntities(texts.text4),
-  callPosTag(texts.text1),
-  callRisk(texts.text5),
-  callSentimentDocument(texts.text8),
-  callSentimentEntity(texts.text7),
-  callSentimentEntityRelation(texts.text9),
-  callSentimentSentence(texts.text6),
-  callSpeculation(texts.text2)
-]);
+response_body = urlopen(request).read()
+print response_body
