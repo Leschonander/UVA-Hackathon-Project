@@ -8,6 +8,7 @@ if (result === null) {
   console.log(str);
   let dto = { "content": str, "answer": 1 }
   console.log(dto);
+  
   $.ajax({
     url: 'https://35.227.102.229/rest/stream',
     method: 'POST',
