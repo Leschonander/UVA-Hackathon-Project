@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>UVA Hackathon Project</title>
+    <link rel='stylesheet' href='style.css'/>
+    <script src="main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+<body>
+<header> MarkMe </header>
+<container> 
+    <form action="http://127.0.0.1:8000/" method="post">
+        <div id="name">
+            <label for="name"> Missing Person Name:</label>
+            <input required type="text" id="name_user" name="user_name">
+        </div>
+        <br>
+        <div id="missing_name">
+            <label for="missing_name">Your Name:</label>
+            <input type="text" id="missing_persona" name="user_name" align="bottom">
+        </div>
+        <br>
+        <div id="Date_O_S">
+            <label for="date_of_missing">Date of Sighting:</label>
+            <input required type="datetime-local" id="Date_O_St" name="Date_O_S">
+        </div>
+        <br>
+        <div id="msg">
+            <label for="msg">What did you see?</label>
+            <textarea required id="msgA" name="user_sighting" ></textarea>
+        </div>
+        <br>
+        <div id="certainty">
+            <label for="date_of_missing">On a 1-5 Scale, how certain are you?</label>
+            <input required type="text" id="certain" name="certain"></input>
+        </div>
+        <br>
+        <div>
+            <button id="button" type = "submit"> Click here to send! </button>
+        </div>
+    </form>
+</container>
+
+
+</body>
+
+
+
+</html>
