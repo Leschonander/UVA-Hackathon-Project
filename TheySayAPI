@@ -1,8 +1,7 @@
 from urllib2 import Request, urlopen
 
-
 def analyse_sent(tip_text):
-values = """
+ values = """
   {
     text = + tip_text
   }
